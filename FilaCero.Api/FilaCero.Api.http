@@ -1,0 +1,66 @@
+@baseUrl = http://localhost:5138
+
+### Estado de API
+GET {{baseUrl}}/api/salud
+
+### Prueba real PostgreSQL
+GET {{baseUrl}}/api/salud/bd
+
+### Sucursales
+GET {{baseUrl}}/api/sucursales
+
+### Registro público (siempre usuario)
+POST {{baseUrl}}/api/auth/registro
+Content-Type: application/json
+
+{
+  "nombreCompleto": "Usuario Ejemplo",
+  "correo": "usuario.ejemplo@correo.test",
+  "telefono": "6441234567",
+  "contrasena": "ContrasenaDePrueba123!"
+}
+
+### Login
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "correo": "usuario.ejemplo@correo.test",
+  "contrasena": "ContrasenaDePrueba123!"
+}
+
+### Disponibilidad para una fecha futura, ajustar según calendario
+GET {{baseUrl}}/api/sucursales/demo-centro/disponibilidad?fecha=2026-11-23
+
+### Requiere pegar token obtenido en /api/auth/login
+@token = PEGA_AQUI_EL_TOKEN
+
+### Mis citas
+GET {{baseUrl}}/api/citas/mias
+Authorization: Bearer {{token}}
+
+### Agendar
+POST {{baseUrl}}/api/citas
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "sucursalId": "demo-centro",
+  "fecha": "2026-11-23",
+  "hora": "09:00:00"
+}
+
+### Guardar triaje (reemplaza GUID por ID de una cita propia)
+PUT {{baseUrl}}/api/citas/00000000-0000-0000-0000-000000000000/triaje
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "dolorPecho": false,
+  "dificultadRespiratoria": false,
+  "inconsciente": false,
+  "fiebre": false,
+  "dolorIntenso": false,
+  "mareo": false,
+  "descripcion": "Prueba"
+}
